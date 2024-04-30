@@ -21,6 +21,10 @@ body {
 .container {
   display: flex;
   flex-direction: column;
+  min-height: 200px;
+  background-color: #dfd5bf;
+  align-items: center;
+  justify-content: center;
 }
 .form-container {
   width: 500px;
@@ -116,5 +120,12 @@ button:hover,
   align-items: center;
   background-color: #fff5e0;
   padding: 10px;
-  height: auto;
+}
+
+.red {
+  color: red !important;
+}
+
+.green {
+  color: greenyellow !important;
 }

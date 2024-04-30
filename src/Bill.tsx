@@ -1,9 +1,10 @@
-function Input(props: { children: any }) {
+import Button from "./Button";
+function Input(props: { children: any; disabled?: boolean }) {
   return (
     <>
       <div className="bill-field">
         <label>{props.children}</label>
-        <input type="text" />
+        <input type="text" disabled={props.disabled} />
       </div>
     </>
   );
@@ -25,14 +26,18 @@ function SelectInput(props: { children: any }) {
 function BillForm() {
   return (
     <>
-      <div className="split-bill">
+      <form className="split-bill">
         <h1>Split your Bill</h1>
-        <Input>Bill value</Input>
-        <Input>Your expense</Input>
-        <Input>Friend expenses</Input>
-        <SelectInput>Who is paying the bill?</SelectInput>
-        <button className="btn-action">Split Bill</button>
-      </div>
+        <div>
+          <Input>Bill value</Input>
+          <Input>Your expense</Input>
+          <Input disabled>Friend expenses</Input>
+          <SelectInput>Who is paying the bill?</SelectInput>
+        </div>
+        <div style={{ width: "100%", padding: "10px" }}>
+          <Button style={{ width: "100%", marginTop: "10px" }}>Split</Button>
+        </div>
+      </form>
     </>
   );
 }

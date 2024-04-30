@@ -1,5 +1,7 @@
-import { useState } from "react";
-function Friend(props: { data: { avatar: string; friendName: string } }) {
+import Button from "./Button";
+function Friend(props: {
+  data: { avatar: string; friendName: string; balance: number; id: number };
+}) {
   const { data } = props;
   return (
     <>
@@ -9,39 +11,20 @@ function Friend(props: { data: { avatar: string; friendName: string } }) {
         </div>
         <div className="info">
           <p>{data.friendName}</p>
-          <p>Friend ows me 20$</p>
+          {data.balance > 0 && (
+            <p className="green">
+              {data.friendName} ows you {data.balance}$
+            </p>
+          )}
+          {data.balance < 0 && (
+            <p className="red">
+              You owed {data.friendName} {data.balance}$
+            </p>
+          )}
+          {data.balance === 0 && <p>You and {data.friendName} are even</p>}
         </div>
         <div className="action">
-          <button>Select</button>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function AddFriend() {
-  return (
-    <>
-      <div className="form-container">
-        <div className="form-field">
-          <label>Friend name</label>
-          <input type="text" placeholder="friend name..." />
-        </div>
-        <div className="form-field">
-          <label htmlFor="">Image url</label>
-          <input type="file" placeholder="image url..." />
-        </div>
-        <div
-          className="action"
-          style={{
-            display: "inline-flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            gap: "2px",
-            marginTop: "10px",
-          }}
-        >
-          <button>Add</button>
+          <Button>Select</Button>
         </div>
       </div>
     </>
@@ -49,27 +32,22 @@ function AddFriend() {
 }
 
 function FriendsList(props: {
-  friends: { friendName: string; avatar: string; id: string }[];
+  friends: {
+    friendName: string;
+    avatar: string;
+    id: number;
+    balance: number;
+  }[];
 }) {
   const { friends } = props;
-
-  const [addingFriendIsOpen, setAddFriendStatus] = useState(false);
   return (
     <>
       <div className="container">
-        {friends.map((friend) => (
-          <Friend data={friend} key={friend.id} />
-        ))}
-
-        {addingFriendIsOpen && <AddFriend />}
-        <div className="action" style={{ width: "100%" }}>
-          <button
-            onClick={() => setAddFriendStatus((isOpen) => !isOpen)}
-            style={{ width: "100%" }}
-          >
-            {addingFriendIsOpen ? "Close" : "Add"}
-          </button>
-        </div>
+        {friends.length === 0 ? (
+          <p>Not any new friends</p>
+        ) : (
+          friends.map((friend) => <Friend data={friend} key={friend.id} />)
+        )}
       </div>
     </>
   );

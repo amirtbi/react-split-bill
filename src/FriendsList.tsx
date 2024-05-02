@@ -1,52 +1,65 @@
 import Button from "./Button";
+import { FriendProps } from "./friends.props";
 function Friend(props: {
-  data: { avatar: string; friendName: string; balance: number; id: number };
+  friend: FriendProps;
+  selectedFriend: FriendProps | null;
+  onSelection: (friendData: FriendProps) => void;
 }) {
-  const { data } = props;
+  const { friend, selectedFriend, onSelection } = props;
   return (
     <>
-      <div className="friend-row">
+      <li
+        className={`friend-row ${
+          selectedFriend?.id === friend.id ? "selected" : ""
+        }`}
+      >
         <div className="avatar">
-          <img src={data.avatar} alt="image" />
+          <img src={friend.avatar} alt="image" />
         </div>
         <div className="info">
-          <p>{data.friendName}</p>
-          {data.balance > 0 && (
+          <p>{friend.friendName}</p>
+          {friend.balance > 0 && (
             <p className="green">
-              {data.friendName} ows you {data.balance}$
+              {friend.friendName} ows you {friend.balance}$
             </p>
           )}
-          {data.balance < 0 && (
+          {friend.balance < 0 && (
             <p className="red">
-              You owed {data.friendName} {data.balance}$
+              You owed {friend.friendName} {friend.balance}$
             </p>
           )}
-          {data.balance === 0 && <p>You and {data.friendName} are even</p>}
+          {friend.balance === 0 && <p>You and {friend.friendName} are even</p>}
         </div>
         <div className="action">
-          <Button>Select</Button>
+          <Button onClick={() => onSelection(friend)}>
+            {selectedFriend?.id === friend.id ? "close" : "Select"}
+          </Button>
         </div>
-      </div>
+      </li>
     </>
   );
 }
 
 function FriendsList(props: {
-  friends: {
-    friendName: string;
-    avatar: string;
-    id: number;
-    balance: number;
-  }[];
+  friends: FriendProps[];
+  selectedFriend: FriendProps | null;
+  onSelection: (friendData: FriendProps) => void;
 }) {
-  const { friends } = props;
+  const { friends, selectedFriend, onSelection } = props;
   return (
     <>
       <div className="container">
         {friends.length === 0 ? (
           <p>Not any new friends</p>
         ) : (
-          friends.map((friend) => <Friend data={friend} key={friend.id} />)
+          friends.map((friend) => (
+            <Friend
+              friend={friend}
+              key={friend.id}
+              selectedFriend={selectedFriend}
+              onSelection={onSelection}
+            />
+          ))
         )}
       </div>
     </>
